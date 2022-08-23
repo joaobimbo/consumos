@@ -81,11 +81,11 @@ int main(void)
 
     for (int i=0; i<N; i++) {
 
-	    ADC[0]=ADS1263_GetChannelValue(1,ads1);
+	ADC[0]=ADS1263_GetChannelValue(1,ads1);
         ADC[1]=ADS1263_GetChannelValue(1,ads2);
 
         clock_gettime(CLOCK_REALTIME, &finish);
-	    times[i] =  (double)(finish.tv_sec-start.tv_sec)*1000.0 + (double)(finish.tv_nsec-start.tv_nsec)/1000000.0;
+	times[i] =  (double)(finish.tv_sec-start.tv_sec)*1000.0 + (double)(finish.tv_nsec-start.tv_nsec)/1000000.0;
 
         measures[i]=ADC2double(ADC[0]);
         measures2[i]=ADC2double(ADC[1]);
