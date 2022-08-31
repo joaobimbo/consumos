@@ -186,6 +186,7 @@ typedef enum
 
 UBYTE ADS1263_init_ADC1(ADS1263_DRATE rate,ADS placa);
 void ADS1263_SetMode(UBYTE Mode);
+void ADS1263_SetDiffChannel(UBYTE Channel,ADS placa); //not needed?
 UDOUBLE ADS1263_GetChannelValue(UBYTE Channel,ADS placa);
-
+void calibrate(ADS placa);
 #endif

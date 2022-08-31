@@ -64,8 +64,13 @@ typedef struct ads
 	int DEV_CS_PIN;
 	int DEV_DRDY_PIN;
 	int DEV_RST_PIN;
-			
+	int flag;
+	//ADS_DATA* adr1;
+	double* data; // data em V ou I
+	double* tempo; //tempo da leitura
 } ADS;
+
+
 /*------------------------------------------------------------------------------------------------------*/
 void DEV_Digital_Write(UWORD Pin, UBYTE Value);
 UBYTE DEV_Digital_Read(UWORD Pin);

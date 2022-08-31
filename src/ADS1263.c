@@ -275,6 +275,21 @@ void ADS1263_SetDiffChannel(UBYTE Channel,ADS placa) //not needed?
 
 
 
+void calibrate(ADS placa){
+    //ADS1263_WriteReg(REG_INPMUX, 0xff,placa); 	
+
+       
+    DEV_Digital_Write(placa.DEV_CS_PIN, 0);
+    DEV_SPI_WriteByte(CMD_START1);
+    DEV_Digital_Write(placa.DEV_CS_PIN, 1);
+
+       
+    DEV_Digital_Write(placa.DEV_CS_PIN, 0);
+    DEV_SPI_WriteByte(CMD_SYOCAL1);
+    DEV_Digital_Write(placa.DEV_CS_PIN, 1);
+
+    ADS1263_WaitDRDY(placa); 
+}
 /******************************************************************************
 function:  Read ADC data
 parameter: 
