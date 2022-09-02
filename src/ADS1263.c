@@ -94,6 +94,25 @@ static UBYTE ADS1263_Read_data(UBYTE Reg,ADS placa)
     return temp;
 }
 
+
+UDOUBLE ADS_read_calib_reg(ADS placa)
+{
+    UDOUBLE read = 0;
+    UBYTE buf[3] = {0, 0, 0};
+    DEV_Digital_Write(placa.DEV_CS_PIN, 0);
+	
+    buf[0] = ADS1263_Read_data(REG_OFCAL0,placa);
+    buf[1] = ADS1263_Read_data(REG_OFCAL1,placa);
+    buf[2] = ADS1263_Read_data(REG_OFCAL2,placa);
+    
+    DEV_Digital_Write(placa.DEV_CS_PIN, 1);
+    read |= ((UDOUBLE)buf[0] << 16);
+    read |= ((UDOUBLE)buf[1] << 8);
+    read |= (UDOUBLE)buf[2];
+
+    printf("reg: %x %x %x %x\r\n", buf[0], buf[1], buf[2], read);
+    return read;
+}
 /******************************************************************************
 function:   Check data
 parameter: 
@@ -183,7 +202,7 @@ void ADS1263_ConfigADC1(ADS1263_GAIN gain, ADS1263_DRATE drate, ADS1263_DELAY de
 	else
 		printf("REG_MODE2 unsuccess \r\n");
 	
-	UBYTE REFMUX = 0x24;		//0x00:+-2.5V as REF, 0x24:VDD,VSS as REF
+	UBYTE REFMUX = 0x00;		//0x00:+-2.5V as REF, 0x24:VDD,VSS as REF
 	ADS1263_WriteReg(REG_REFMUX, REFMUX, placa);
 	DEV_Delay_ms(1);
 	if(ADS1263_Read_data(REG_REFMUX,placa) == REFMUX)
@@ -240,7 +259,7 @@ static void ADS1263_SetChannel(UBYTE Channal,ADS placa)
 	if(ADS1263_Read_data(REG_INPMUX, placa) == INPMUX) {
 		// printf("ADS1263_ADC1_SetChannal success \r\n");
 	} else {
-		printf("ADS1263_ADC1_SetChannal unsuccess \r\n");
+		printf("ADS1263_ADC1_SetChannel unsuccess \r\n");
 	}
 }
 
@@ -276,8 +295,10 @@ void ADS1263_SetDiffChannel(UBYTE Channel,ADS placa) //not needed?
 
 
 void calibrate(ADS placa){
-    //ADS1263_WriteReg(REG_INPMUX, 0xff,placa); 	
-
+  
+    /*ADS1263_WriteReg(REG_INPMUX, 0xff,placa); 	
+    
+    
        
     DEV_Digital_Write(placa.DEV_CS_PIN, 0);
     DEV_SPI_WriteByte(CMD_START1);
@@ -285,10 +306,21 @@ void calibrate(ADS placa){
 
        
     DEV_Digital_Write(placa.DEV_CS_PIN, 0);
-    DEV_SPI_WriteByte(CMD_SYOCAL1);
+    DEV_SPI_WriteByte(CMD_SFOCAL1);
     DEV_Digital_Write(placa.DEV_CS_PIN, 1);
 
     ADS1263_WaitDRDY(placa); 
+*/
+    //UDOUBLE read = ADS_read_calib_reg(placa);
+    UBYTE OFFSET=0x00; //0x6f;
+    ADS1263_WriteReg(REG_OFCAL2, OFFSET,placa);
+    if(ADS1263_Read_data(REG_OFCAL2,placa) == OFFSET) {
+		 printf("offset success \r\n");
+	} else {
+		printf("offset unsuccess \r\n");
+	} 	
+
+    
 }
 /******************************************************************************
 function:  Read ADC data
@@ -303,10 +335,12 @@ static UDOUBLE ADS1263_Read_ADC1_Data(ADS placa)
     DEV_Digital_Write(placa.DEV_CS_PIN, 0);
 	do {
 		DEV_SPI_WriteByte(CMD_RDATA1);
-		// DEV_Delay_ms(10);
 		Status = DEV_SPI_ReadByte();
+        //if(Status!=0x69)        
+        //printf("STATUS: %x\n",Status);
 	}while((Status & 0x40) == 0);
-	
+	 DEV_Delay_ms(0);
+
     buf[0] = DEV_SPI_ReadByte();
     buf[1] = DEV_SPI_ReadByte();
     buf[2] = DEV_SPI_ReadByte();

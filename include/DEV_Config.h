@@ -59,16 +59,33 @@
 //extern int DEV_CS_PIN_V;
 //extern int DEV_CS_PIN_I;
 //extern int DEV_DRDY_PIN;
+
+
+#define N_SAMPLES 10000
+#define N_BUFFERS 2
+
+typedef enum 
+{
+	BUF_STATE_EMPTY,
+	BUF_STATE_FULL,
+	BUF_STATE_SENT,
+
+}BUF_STATE;
+
+
 typedef struct ads
 {
 	int DEV_CS_PIN;
 	int DEV_DRDY_PIN;
 	int DEV_RST_PIN;
-	int flag;
+	int buf_select; // preenchimento sequencial de buffers
+	int ads_identifier; // ads 1 or ads 2
 	//ADS_DATA* adr1;
-	double* data; // data em V ou I
-	double* tempo; //tempo da leitura
+	int buf_status[N_BUFFERS]; // empty, full or sent
+	double* data[N_BUFFERS]; // data em V ou I
+	double* tempo[N_BUFFERS]; //tempo da leitura
 } ADS;
+
 
 
 /*------------------------------------------------------------------------------------------------------*/

@@ -131,6 +131,8 @@ typedef enum
 	ADS1263_DAC_VLOT_0_5		= 0b11001,
 }ADS1263_DAC_VOLT;
 
+
+
 typedef enum
 {
 	/*Register address, followed by reset the default values */
@@ -188,5 +190,7 @@ UBYTE ADS1263_init_ADC1(ADS1263_DRATE rate,ADS placa);
 void ADS1263_SetMode(UBYTE Mode);
 void ADS1263_SetDiffChannel(UBYTE Channel,ADS placa); //not needed?
 UDOUBLE ADS1263_GetChannelValue(UBYTE Channel,ADS placa);
+UDOUBLE ADS_read_calib_reg(ADS placa);
 void calibrate(ADS placa);
+
 #endif

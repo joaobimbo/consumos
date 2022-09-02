@@ -11,14 +11,14 @@ set title 'Voltage'
 d(y) = ($0 == 0) ? (y1 = y, 1/0) : (y2 = y1, y1 = y, y1-y2)
 
 
-while (1) {
-p "test1.txt" u 2:3 every ::3200::7200,\
-"test1.txt" u 2:4 every ::3200::7200,\
+#while (1) {
+p "test1.txt" u 2:3 every ::1320::2320,\
+"test1.txt" u 2:4 every ::1320::2320,\
 #"test1.txt" u ($2):(d($2)) title '1-variable derivative', 
 #p "test1.txt" u 2:3 every ::2000::2200 w lp,\
     #"test1.txt" u 2:3 w lp,\
 
 
-;pause 5  "Hit return to continue"
-}
+;pause -1  "Hit return to continue"
+#}
 
