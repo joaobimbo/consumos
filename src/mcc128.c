@@ -2259,7 +2259,7 @@ int mcc128_a_in_scan_status(uint8_t address, uint16_t* status,
   available data.
  *****************************************************************************/
 int mcc128_a_in_scan_read(uint8_t address, uint16_t* status,
-    int32_t samples_per_channel, double timeout, double* buffer,
+    int32_t samples_per_channel, double timeout, double* buffer, double* time_buffer,
     uint32_t buffer_size_samples, uint32_t* samples_read_per_channel)
 {
     uint32_t samples_to_read;
@@ -2410,6 +2410,7 @@ int mcc128_a_in_scan_read(uint8_t address, uint16_t* status,
             usleep(100);
             clock_gettime(CLOCK_MONOTONIC, &current_time);
             uint32_t dt=_difftime_us(&start_time, &current_time);
+            time_buffer[samples_read/4]=(double)dt;
             //printf("dt: %d\n",dt);
 
             if (!no_timeout)

@@ -8,9 +8,6 @@
 struct DATA_SENT
 {
     double voltage[channels_read][buff_size];
-    //double voltage_two[buff_size];
-    //double voltage_three[buff_size];
-    //double voltage_four[buff_size];
     double delta_time_ms[buff_size];
 
 };
