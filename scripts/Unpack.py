@@ -3,7 +3,10 @@ import socket
 import struct
 import numpy as np
 from numpy.fft import fft
-    
+import matplotlib
+import matplotlib.pyplot as plt
+from IPython import embed
+
 
 
 def criar_socket(UDP_IP,UDP_PORT):
@@ -17,37 +20,48 @@ def criar_socket(UDP_IP,UDP_PORT):
     
     
 def receber_do_sock(sock):
-    data, addr = sock.recvfrom(1024) # buffer 5*2048 bytes
-    dn=np.frombuffer(data)
-    
-    
+    data, addr = sock.recvfrom(2048*8) # buffer 5*2048 bytes
+    dn=np.frombuffer(data)    
     #dn=struct.unpack('f', data)
         
     return(dn)
 
 def acrescentar(dados,dados_novos):
+    print('acrescentar')
+    print('tamanhos: %d %d %d %d %d'  % (len(dados),len(dados[1:2048*7]),len(dados[2049:2048*8]),len(dados[2048*7:2048*8]),len(dados_novos)))
     dados[1:2048*7]=dados[2049:2048*8]
     dados[2048*7:2048*8]=dados_novos
     return(dados)
 
 def processar(dados):
+    print('fazer fft')
     FFT_Dados=fft(dados)
-    return FFT_Dados
-    
+    return np.abs(FFT_Dados)
+
+def grafico(f):
+    x = np.linspace(0.1, 2 * np.pi, 2048*8)
+    embed()
+    plt.stem(x,y)
+    plt.show()
         
 def main():
     dados_obtidos = []
+    dados=np.zeros(2048*8,dtype=float)
+
     sock=criar_socket("127.0.0.1",8543)
-    print("Bora")
+    print("Bora %d" % (len(dados)))
     while True:
         try:             
             dn=receber_do_sock(sock)
-            print(dn)
+            print('recebido')
+            #print(dn)
             dados=acrescentar(dados,dn)
+            print('acrescentado')
             #dados_obtidos.append(dn)
-            f=f.append.processar(dados)    
+            f=processar(dados)
             print('FFT')
             print(f)         
+            grafico(f)
         except: 
             continue
     

@@ -30,9 +30,9 @@ while True:
     freq = 50
     data = 3*np.sin(2*np.pi*freq*t)
     #data=np.random.randn(5)   
-    print(data)
+    print(len(data))
     s.sendto(data,addr)
-    time.sleep(10)
+    time.sleep(1)
     #if(s.sendto(data,addr)):
     #    data = f.read(buf)
     #s.close()
