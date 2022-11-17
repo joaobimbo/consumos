@@ -7,6 +7,8 @@ import sys
 import numpy as np
 import time
 import math
+import random
+
 
 s = socket(AF_INET,SOCK_DGRAM)
 host = "127.0.0.1"
@@ -27,7 +29,7 @@ while True:
     ts = 1.0/sr
     t = np.arange(0,1,ts)
 
-    freq = 50
+    freq = random.randrange(20,300)
     data = 3*np.sin(2*np.pi*freq*t)
     #data=np.random.randn(5)   
     print(len(data))

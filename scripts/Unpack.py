@@ -3,7 +3,6 @@ import socket
 import struct
 import numpy as np
 from numpy.fft import fft
-import matplotlib
 import matplotlib.pyplot as plt
 from IPython import embed
 
@@ -27,8 +26,8 @@ def receber_do_sock(sock):
     return(dn)
 
 def acrescentar(dados,dados_novos):
-    print('acrescentar')
-    print('tamanhos: %d %d %d %d %d'  % (len(dados),len(dados[1:2048*7]),len(dados[2049:2048*8]),len(dados[2048*7:2048*8]),len(dados_novos)))
+    #print('acrescentar')
+    #print('tamanhos: %d %d %d %d %d'  % (len(dados),len(dados[1:2048*7]),len(dados[2049:2048*8]),len(dados[2048*7:2048*8]),len(dados_novos)))
     dados[1:2048*7]=dados[2049:2048*8]
     dados[2048*7:2048*8]=dados_novos
     return(dados)
@@ -39,10 +38,10 @@ def processar(dados):
     return np.abs(FFT_Dados)
 
 def grafico(f):
-    x = np.linspace(0.1, 2 * np.pi, 2048*8)
-    embed()
-    plt.stem(x,y)
-    plt.show()
+    x = np.linspace(0, 2 * np.pi, 2048*8)
+    #embed()
+    plt.stem(x,f)
+    plt.show(block=True)
         
 def main():
     dados_obtidos = []
@@ -53,10 +52,8 @@ def main():
     while True:
         try:             
             dn=receber_do_sock(sock)
-            print('recebido')
             #print(dn)
             dados=acrescentar(dados,dn)
-            print('acrescentado')
             #dados_obtidos.append(dn)
             f=processar(dados)
             print('FFT')
