@@ -13,7 +13,7 @@ int main(int argc, char **argv){
     exit(0);
   }
 
-  char *ip = "127.0.0.1";
+  char *ip = "127.0.0.1";//"192.168.88.224";
   int port = atoi(argv[1]);
 
   int sockfd;
@@ -43,11 +43,11 @@ int main(int argc, char **argv){
   addr_size = sizeof(client_addr);
   recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr*)&client_addr, &addr_size);
   printf("[+]Data recv: %s\n", buffer);
-
+while(1){
   bzero(buffer, 1024);
   strcpy(buffer, "Welcome to the UDP Server.");
   sendto(sockfd, buffer, 1024, 0, (struct sockaddr*)&client_addr, sizeof(client_addr));
   printf("[+]Data send: %s\n", buffer);
-
+}
   return 0;
 }

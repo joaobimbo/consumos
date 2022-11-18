@@ -13,9 +13,6 @@
 
 void data_split(double *buff, struct DATA_SENT *dest)
 {
-    //pthread_mutex_lock(buff);
-    
-    
 
     for (size_t j = 0; j< channels_read; j++)
     {
@@ -23,12 +20,12 @@ void data_split(double *buff, struct DATA_SENT *dest)
 
         for (int i = j; i < buff_size*channels_read; i = i + channels_read)
         {
-            dest->voltage[j][k]=buff[i];
+            dest->voltage[j][k]=(float) buff[i];
             k++;
         }
         
     }
-    //pthread_mutex_unlock(buff);
+    
 }
 
 

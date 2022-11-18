@@ -511,7 +511,7 @@ int mcc128_a_in_scan_status(uint8_t address, uint16_t* status,
 *           active.
 */
 int mcc128_a_in_scan_read(uint8_t address, uint16_t* status,
-    int32_t samples_per_channel, double timeout, double* buffer, double* time_buffer,
+    int32_t samples_per_channel, double timeout, double* buffer,
     uint32_t buffer_size_samples, uint32_t* samples_read_per_channel);
 
 /**
